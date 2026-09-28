@@ -1,13 +1,6 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.novoda:bintray-release:0.3.4'
-    }
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
 }
 
 android {
@@ -20,6 +13,7 @@ android {
         versionCode 1
         versionName "1.4.0"
     }
+    namespace 'com.miguelcatalan.materialsearchview'
     buildTypes {
         release {
             minifyEnabled false
@@ -29,16 +23,35 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:23.1.1'
+    implementation 'com.android.support:design:23.1.1'
 }
 
-publish {
-    userOrg = 'miguelcatalan'
-    groupId = 'com.miguelcatalan'
-    artifactId = 'materialsearchview'
-    publishVersion = '1.4.0'
-    desc = 'Cute library to implement SearchView in a Material Design Approach'
-    website = 'https://github.com/MiguelCatalan/MaterialSearchView'
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'com.miguelcatala'
+            artifactId = 'materialsearchview'
+            version = '1.4.0'
+            afterEvaluate {
+                from components.release
+            }
+            pom {
+                name = 'materialsearchview'
+                description = 'Cute library to implement SearchView in a Material Design Approach'
+                url = 'https://github.com/MiguelCatalan/MaterialSearchView'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/MiguelCatalan/MaterialSearchView.git'
+                    url = 'https://github.com/MiguelCatalan/MaterialSearchView'
+                }
+            }
+        }
+    }
 }
