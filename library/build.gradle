@@ -4,8 +4,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 14
@@ -20,6 +19,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lint {
+        disable 'GradleCompatible', 'ExpiredTargetSdkVersion'
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
@@ -31,9 +40,9 @@ dependencies {
 publishing {
     publications {
         release(MavenPublication) {
-            groupId = 'com.miguelcatala'
+            groupId = 'com.github.nitram84'
             artifactId = 'materialsearchview'
-            version = '1.4.0'
+            version = '1.4.0-SNAPSHOT'
             afterEvaluate {
                 from components.release
             }
